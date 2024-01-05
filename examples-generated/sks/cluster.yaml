@@ -1,0 +1,10 @@
+apiVersion: sks.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  name: gs-sks-7
+spec:
+  forProvider:
+    name: gs-sks-7
+    zone: at-vie-2
+  providerConfigRef:
+    name: default

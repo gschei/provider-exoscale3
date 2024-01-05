@@ -15,7 +15,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/terraform"
 
-	"github.com/upbound/upjet-provider-template/apis/v1beta1"
+	"github.com/gschei/provider-exoscale3/apis/v1beta1"
 )
 
 const (
@@ -24,7 +24,12 @@ const (
 	errGetProviderConfig    = "cannot get referenced ProviderConfig"
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal template credentials as JSON"
+	errUnmarshalCredentials = "cannot unmarshal exoscale3 credentials as JSON"
+)
+
+const (
+	exoApiKey    = "key"
+	exoApiSecret = "secret"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -62,11 +67,13 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
+		ps.Configuration = map[string]any{}
+		if v, ok := creds[exoApiKey]; ok {
+			ps.Configuration[exoApiKey] = v
+		}
+		if v, ok := creds[exoApiSecret]; ok {
+			ps.Configuration[exoApiSecret] = v
+		}
 		return ps, nil
 	}
 }

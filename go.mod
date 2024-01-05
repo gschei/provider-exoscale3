@@ -1,4 +1,4 @@
-module github.com/upbound/upjet-provider-template
+module github.com/gschei/provider-exoscale3
 
 go 1.19
 
